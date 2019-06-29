@@ -1,0 +1,53 @@
+#!/bin/bash
+# copy icons, plist and gtouch
+APP_NAME=changeDate
+DIR_CURRENT=`pwd`
+echo "current-dir: $DIR_CURRENT"
+
+if [ ! -d "$DIR_CURRENT/APP/$APP_NAME.app" ];
+  then
+    echo "APP-DIR:			[failed]"
+    exit 0
+fi
+echo "APP-DIR:			[OK]"
+
+if [ ! -d "$DIR_CURRENT/SRC" ];
+  then
+    echo "SRC-DIR:			[failed]"
+    exit 0
+fi
+echo "SRC-DIR:			[OK]"
+
+if [ ! -f "$DIR_CURRENT/SRC/Info.plist" ];
+  then
+    echo "Info.plist:			[failed]"
+    exit 0
+else
+    rm "$DIR_CURRENT/APP/$APP_NAME.app/Contents/Info.plist"
+    cp "$DIR_CURRENT/SRC/Info.plist" "$DIR_CURRENT/APP/$APP_NAME.app/Contents/Info.plist"
+    echo "Info.plist:			[OK]"
+fi
+
+if [ ! -f "$DIR_CURRENT/SRC/changeDate.icns" ];
+  then
+    echo "changeDate.icns:			[failed]"
+    exit 0
+else
+    cp "$DIR_CURRENT/SRC/changeDate.icns" "$DIR_CURRENT/APP/$APP_NAME.app/Contents/Resources/changeDate.icns"
+    echo "changeDate.icns:			[OK]"
+fi
+
+if [ ! -f "$DIR_CURRENT/SRC/gtouch" ];
+  then
+    echo "gtouch:			[failed]"
+    exit 0
+else
+    cp "$DIR_CURRENT/SRC/gtouch" "$DIR_CURRENT/APP/$APP_NAME.app/Contents/Resources/gtouch"
+    echo "gtouch:			[OK]"
+fi
+
+echo "> preparation completed ..."
+rm *.bz2 *.dmg
+echo "> creating DMG ..."
+make all
+exit 0
